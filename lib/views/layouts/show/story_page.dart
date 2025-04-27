@@ -21,7 +21,7 @@ class Sticker {
 class StoryPage {
   final String title;
   final String body;
-
+  final int? backgroundSeedColor;
   final Sticker? topLeftSticker;
   final Sticker? topRightSticker;
   final Sticker? bottomLeftSticker;
@@ -30,16 +30,30 @@ class StoryPage {
   StoryPage({
     required this.title,
     required this.body,
+    required this.backgroundSeedColor,
     required this.topLeftSticker,
     required this.topRightSticker,
     required this.bottomLeftSticker,
     required this.bottomRightSticker,
   });
 
+  StoryPage copyWithBackgroundColor(int? backgroundSeedColor) {
+    return StoryPage(
+      title: title,
+      body: body,
+      backgroundSeedColor: backgroundSeedColor,
+      topLeftSticker: topLeftSticker,
+      topRightSticker: topRightSticker,
+      bottomLeftSticker: bottomLeftSticker,
+      bottomRightSticker: bottomRightSticker,
+    );
+  }
+
   StoryPage copyWithTopLeftSticker(Sticker? topLeftSticker) {
     return StoryPage(
       title: title,
       body: body,
+      backgroundSeedColor: backgroundSeedColor,
       topLeftSticker: topLeftSticker,
       topRightSticker: topRightSticker,
       bottomLeftSticker: bottomLeftSticker,
@@ -51,6 +65,7 @@ class StoryPage {
     return StoryPage(
       title: title,
       body: body,
+      backgroundSeedColor: backgroundSeedColor,
       topLeftSticker: topLeftSticker,
       topRightSticker: topRightSticker,
       bottomLeftSticker: bottomLeftSticker,
@@ -62,6 +77,7 @@ class StoryPage {
     return StoryPage(
       title: title,
       body: body,
+      backgroundSeedColor: backgroundSeedColor,
       topLeftSticker: topLeftSticker,
       topRightSticker: topRightSticker,
       bottomLeftSticker: bottomLeftSticker,
@@ -73,6 +89,7 @@ class StoryPage {
     return StoryPage(
       title: title,
       body: body,
+      backgroundSeedColor: backgroundSeedColor,
       topLeftSticker: topLeftSticker,
       topRightSticker: topRightSticker,
       bottomLeftSticker: bottomLeftSticker,

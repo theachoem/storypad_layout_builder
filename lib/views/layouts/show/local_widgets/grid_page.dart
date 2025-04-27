@@ -40,6 +40,15 @@ class GridPage extends StatelessWidget {
         ? ImagePickerService.getContent(page.bottomRightSticker!.imageKey)
         : null;
 
+    Color? backgroundColor;
+    if (page.backgroundSeedColor != null) {
+      final color = Color(page.backgroundSeedColor!);
+      backgroundColor = ColorScheme.fromSeed(
+        seedColor: color,
+        brightness: ColorScheme.of(context).brightness,
+      ).surface;
+    }
+
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -53,7 +62,7 @@ class GridPage extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.only(top: 8.0, bottom: 16.0),
             decoration: BoxDecoration(
-              color: null,
+              color: backgroundColor,
               borderRadius: BorderRadius.zero,
             ),
             child: Column(
@@ -97,7 +106,11 @@ class GridPage extends StatelessWidget {
             child: IgnorePointer(
               child: RotateChild(
                 rotationDegree: page.topLeftSticker!.rotationDegree,
-                child: Image.memory(topLeftSticker),
+                child: Image.memory(
+                  topLeftSticker,
+                  width: page.topLeftSticker!.width.toDouble(),
+                  height: page.topLeftSticker!.height.toDouble(),
+                ),
               ),
             ),
           ),
@@ -108,7 +121,11 @@ class GridPage extends StatelessWidget {
             child: IgnorePointer(
               child: RotateChild(
                 rotationDegree: page.topRightSticker!.rotationDegree,
-                child: Image.memory(topRightSticker),
+                child: Image.memory(
+                  topRightSticker,
+                  width: page.topRightSticker!.width.toDouble(),
+                  height: page.topRightSticker!.height.toDouble(),
+                ),
               ),
             ),
           ),
@@ -119,7 +136,11 @@ class GridPage extends StatelessWidget {
             child: IgnorePointer(
               child: RotateChild(
                 rotationDegree: page.bottomLeftSticker!.rotationDegree,
-                child: Image.memory(bottomLeftSticker),
+                child: Image.memory(
+                  bottomLeftSticker,
+                  width: page.bottomLeftSticker!.width.toDouble(),
+                  height: page.bottomLeftSticker!.height.toDouble(),
+                ),
               ),
             ),
           ),
@@ -130,7 +151,11 @@ class GridPage extends StatelessWidget {
             child: IgnorePointer(
               child: RotateChild(
                 rotationDegree: page.bottomRightSticker!.rotationDegree,
-                child: Image.memory(bottomRightSticker),
+                child: Image.memory(
+                  bottomRightSticker,
+                  width: page.bottomRightSticker!.width.toDouble(),
+                  height: page.bottomRightSticker!.height.toDouble(),
+                ),
               ),
             ),
           )

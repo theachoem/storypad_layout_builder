@@ -6,6 +6,8 @@ import 'package:storypad_layout_builder/views/layouts/show/story_page.dart';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:storypad_layout_builder/views/theme/theme_view.dart';
+
 class StickerSheet extends StatefulWidget {
   const StickerSheet({
     super.key,
@@ -207,11 +209,62 @@ class _StickerSheetState extends State<StickerSheet> {
               );
             }).toList(),
           ),
+          Divider(),
+          buildColorSeedTile(context),
           FilledButton(
             child: Text("Save"),
             onPressed: () => Navigator.maybePop(context, page),
           )
         ],
+      ),
+    );
+  }
+
+  Widget buildColorSeedTile(BuildContext context) {
+    return PopupMenuButton(
+      onSelected: (value) {
+        page = page.copyWithBackgroundColor(
+          // ignore: deprecated_member_use
+          value.value == page.backgroundSeedColor ? null : value.value,
+        );
+        setState(() {});
+      },
+      itemBuilder: (BuildContext context) {
+        return kMaterialColors.map((color) {
+          return PopupMenuItem(
+            value: color,
+            child: Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+              // ignore: deprecated_member_use
+              child: color.value == page.backgroundSeedColor
+                  ? Icon(Icons.check, color: Colors.white)
+                  : null,
+            ),
+          );
+        }).toList();
+      },
+      child: ListTile(
+        leading: SizedBox(width: 64.0, child: Icon(Icons.color_lens)),
+        title: Text("Background Color"),
+        trailing: Container(
+          padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: Theme.of(context).dividerColor),
+          ),
+          child: Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: page.backgroundSeedColor != null
+                  ? Color(page.backgroundSeedColor!)
+                  : null,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -56,6 +56,15 @@ class _ShowLayoutViewState extends State<ShowLayoutView> {
     String key3 = "stickers-$index-${Alignment.bottomLeft}";
     String key4 = "stickers-$index-${Alignment.bottomRight}";
 
+    if (page.backgroundSeedColor != null) {
+      web.window.localStorage.setItem(
+        "page-0-background",
+        page.backgroundSeedColor.toString(),
+      );
+    } else {
+      web.window.localStorage.removeItem("page-0-background");
+    }
+
     if (page.topLeftSticker != null) {
       web.window.localStorage.setItem(
         key1,
@@ -142,6 +151,9 @@ class _ShowLayoutViewState extends State<ShowLayoutView> {
               "Something small that made me smile",
               "I'm grateful for the people in my life Something small that made me smile A person who made my day better today.",
             ].join("\n"),
+            backgroundSeedColor: int.tryParse(web.window.localStorage
+                .getItem('page-0-background')
+                .toString()),
             topLeftSticker: getPageSticker(0, Alignment.topLeft),
             topRightSticker: getPageSticker(0, Alignment.topRight),
             bottomLeftSticker: getPageSticker(0, Alignment.bottomLeft),
@@ -154,6 +166,9 @@ class _ShowLayoutViewState extends State<ShowLayoutView> {
               "I learned that I need to communicate",
               "I want to improve on being more patient with myself",
             ].join("\n"),
+            backgroundSeedColor: int.tryParse(web.window.localStorage
+                .getItem('page-1-background')
+                .toString()),
             topLeftSticker: getPageSticker(1, Alignment.topLeft),
             topRightSticker: getPageSticker(1, Alignment.topRight),
             bottomLeftSticker: getPageSticker(1, Alignment.bottomLeft),
@@ -166,6 +181,9 @@ class _ShowLayoutViewState extends State<ShowLayoutView> {
               "A moment I want to remember oranges and pinks.",
               "Something that surprised me today was an unexpected message from an old friend.",
             ].join("\n"),
+            backgroundSeedColor: int.tryParse(web.window.localStorage
+                .getItem('page-2-background')
+                .toString()),
             topLeftSticker: getPageSticker(2, Alignment.topLeft),
             topRightSticker: getPageSticker(2, Alignment.topRight),
             bottomLeftSticker: getPageSticker(2, Alignment.bottomLeft),
@@ -178,6 +196,9 @@ class _ShowLayoutViewState extends State<ShowLayoutView> {
               "Something small that made me smile",
               "A person who made my day better today.",
             ].join("\n"),
+            backgroundSeedColor: int.tryParse(web.window.localStorage
+                .getItem('page-3-background')
+                .toString()),
             topLeftSticker: getPageSticker(3, Alignment.topLeft),
             topRightSticker: getPageSticker(3, Alignment.topRight),
             bottomLeftSticker: getPageSticker(3, Alignment.bottomLeft),
