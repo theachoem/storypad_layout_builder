@@ -3,6 +3,8 @@ import 'package:storypad_layout_builder/core/extensions/string_extension.dart';
 import 'package:storypad_layout_builder/core/services/image_picker_service.dart';
 import 'package:storypad_layout_builder/views/layouts/show/local_widgets/rotate_child.dart';
 import 'package:storypad_layout_builder/views/layouts/show/story_page.dart';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 class StickerSheet extends StatefulWidget {
   const StickerSheet({
@@ -63,7 +65,9 @@ class _StickerSheetState extends State<StickerSheet> {
                         )
                       : Icon(Icons.image_not_supported_outlined),
                 ),
-                title: Text(entry.key.capitalize),
+                title: Text(entry.value != null
+                    ? "${entry.key.capitalize} ${entry.value?.width} / ${entry.value?.height}"
+                    : entry.key.capitalize),
                 subtitle: entry.value != null
                     ? Slider(
                         padding: EdgeInsets.zero,
@@ -79,6 +83,8 @@ class _StickerSheetState extends State<StickerSheet> {
                                 Sticker(
                                   rotationDegree: value,
                                   imageKey: entry.value!.imageKey,
+                                  width: entry.value!.width,
+                                  height: entry.value!.height,
                                 ),
                               );
                               break;
@@ -87,6 +93,8 @@ class _StickerSheetState extends State<StickerSheet> {
                                 Sticker(
                                   rotationDegree: value,
                                   imageKey: entry.value!.imageKey,
+                                  width: entry.value!.width,
+                                  height: entry.value!.height,
                                 ),
                               );
                               break;
@@ -95,6 +103,8 @@ class _StickerSheetState extends State<StickerSheet> {
                                 Sticker(
                                   rotationDegree: value,
                                   imageKey: entry.value!.imageKey,
+                                  width: entry.value!.width,
+                                  height: entry.value!.height,
                                 ),
                               );
                               break;
@@ -103,6 +113,8 @@ class _StickerSheetState extends State<StickerSheet> {
                                 Sticker(
                                   rotationDegree: value,
                                   imageKey: entry.value!.imageKey,
+                                  width: entry.value!.width,
+                                  height: entry.value!.height,
                                 ),
                               );
                               break;
@@ -117,27 +129,53 @@ class _StickerSheetState extends State<StickerSheet> {
                         icon: Icon(Icons.add),
                         onPressed: () async {
                           final key = await ImagePickerService().pick(context);
+
                           if (key == null) return;
+
+                          final content = ImagePickerService.getContent(key);
+                          if (content == null) return;
+
+                          final size = await getImageSize(content);
 
                           switch (entry.key) {
                             case 'Top left':
                               page = page.copyWithTopLeftSticker(
-                                Sticker(rotationDegree: 0, imageKey: key),
+                                Sticker(
+                                  rotationDegree: 0,
+                                  imageKey: key,
+                                  width: size.width,
+                                  height: size.height,
+                                ),
                               );
                               break;
                             case 'Top right':
                               page = page.copyWithTopRightSticker(
-                                Sticker(rotationDegree: 0, imageKey: key),
+                                Sticker(
+                                  rotationDegree: 0,
+                                  imageKey: key,
+                                  width: size.width,
+                                  height: size.height,
+                                ),
                               );
                               break;
                             case 'Bottom left':
                               page = page.copyWithBottomLeftSticker(
-                                Sticker(rotationDegree: 0, imageKey: key),
+                                Sticker(
+                                  rotationDegree: 0,
+                                  imageKey: key,
+                                  width: size.width,
+                                  height: size.height,
+                                ),
                               );
                               break;
                             case 'Bottom right':
                               page = page.copyWithBottomRightSticker(
-                                Sticker(rotationDegree: 0, imageKey: key),
+                                Sticker(
+                                  rotationDegree: 0,
+                                  imageKey: key,
+                                  width: size.width,
+                                  height: size.height,
+                                ),
                               );
                               break;
                           }
@@ -177,4 +215,15 @@ class _StickerSheetState extends State<StickerSheet> {
       ),
     );
   }
+}
+
+Future<ui.Image> loadImage(Uint8List imgBytes) async {
+  final codec = await ui.instantiateImageCodec(imgBytes);
+  final frame = await codec.getNextFrame();
+  return frame.image;
+}
+
+Future<ui.Image> getImageSize(Uint8List imgBytes) async {
+  final image = await loadImage(imgBytes);
+  return image;
 }

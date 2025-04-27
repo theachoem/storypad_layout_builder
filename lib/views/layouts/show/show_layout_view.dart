@@ -31,11 +31,18 @@ class _ShowLayoutViewState extends State<ShowLayoutView> {
           ? double.tryParse(data['rotationDegree'].toString())
           : null;
       String? imageKey = data['imageKey'];
+      int? width = int.tryParse(data['width'].toString());
+      int? height = int.tryParse(data['height'].toString());
 
-      if (rotationDegree != null && imageKey != null) {
+      if (rotationDegree != null &&
+          imageKey != null &&
+          width != null &&
+          height != null) {
         return Sticker(
           rotationDegree: rotationDegree,
           imageKey: imageKey,
+          width: width,
+          height: height,
         );
       }
     }
@@ -55,6 +62,8 @@ class _ShowLayoutViewState extends State<ShowLayoutView> {
         jsonEncode({
           'rotationDegree': page.topLeftSticker!.rotationDegree,
           'imageKey': page.topLeftSticker!.imageKey,
+          'width': page.topLeftSticker!.width,
+          'height': page.topLeftSticker!.height,
         }),
       );
     } else {
@@ -67,6 +76,8 @@ class _ShowLayoutViewState extends State<ShowLayoutView> {
         jsonEncode({
           'rotationDegree': page.topRightSticker!.rotationDegree,
           'imageKey': page.topRightSticker!.imageKey,
+          'width': page.topRightSticker!.width,
+          'height': page.topRightSticker!.height,
         }),
       );
     } else {
@@ -79,6 +90,8 @@ class _ShowLayoutViewState extends State<ShowLayoutView> {
         jsonEncode({
           'rotationDegree': page.bottomLeftSticker!.rotationDegree,
           'imageKey': page.bottomLeftSticker!.imageKey,
+          'width': page.bottomLeftSticker!.width,
+          'height': page.bottomLeftSticker!.height,
         }),
       );
     } else {
@@ -91,6 +104,8 @@ class _ShowLayoutViewState extends State<ShowLayoutView> {
         jsonEncode({
           'rotationDegree': page.bottomRightSticker!.rotationDegree,
           'imageKey': page.bottomRightSticker!.imageKey,
+          'width': page.bottomRightSticker!.width,
+          'height': page.bottomRightSticker!.height,
         }),
       );
     } else {

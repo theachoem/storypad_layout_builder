@@ -94,36 +94,44 @@ class GridPage extends StatelessWidget {
           Positioned(
             left: -36,
             top: -36,
-            child: RotateChild(
-              rotationDegree: page.topLeftSticker!.rotationDegree,
-              child: Image.memory(topLeftSticker),
+            child: IgnorePointer(
+              child: RotateChild(
+                rotationDegree: page.topLeftSticker!.rotationDegree,
+                child: Image.memory(topLeftSticker),
+              ),
             ),
           ),
         if (topRightSticker != null)
           Positioned(
             right: -36,
             top: -36,
-            child: RotateChild(
-              rotationDegree: page.topRightSticker!.rotationDegree,
-              child: Image.memory(topRightSticker),
+            child: IgnorePointer(
+              child: RotateChild(
+                rotationDegree: page.topRightSticker!.rotationDegree,
+                child: Image.memory(topRightSticker),
+              ),
             ),
           ),
         if (bottomLeftSticker != null)
           Positioned(
             left: -36,
             bottom: -36,
-            child: RotateChild(
-              rotationDegree: page.bottomLeftSticker!.rotationDegree,
-              child: Image.memory(bottomLeftSticker),
+            child: IgnorePointer(
+              child: RotateChild(
+                rotationDegree: page.bottomLeftSticker!.rotationDegree,
+                child: Image.memory(bottomLeftSticker),
+              ),
             ),
           ),
         if (bottomRightSticker != null)
           Positioned(
             right: -36,
             bottom: -36,
-            child: RotateChild(
-              rotationDegree: page.bottomRightSticker!.rotationDegree,
-              child: Image.memory(bottomRightSticker),
+            child: IgnorePointer(
+              child: RotateChild(
+                rotationDegree: page.bottomRightSticker!.rotationDegree,
+                child: Image.memory(bottomRightSticker),
+              ),
             ),
           )
       ],

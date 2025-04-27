@@ -7,10 +7,14 @@ enum StoryPagesLayoutType {
 class Sticker {
   final double rotationDegree;
   final String imageKey;
+  final int width;
+  final int height;
 
   Sticker({
     required this.rotationDegree,
     required this.imageKey,
+    required this.width,
+    required this.height,
   });
 }
 
