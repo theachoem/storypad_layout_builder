@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:storypad_layout_builder/app_theme.dart';
+import 'package:storypad_layout_builder/core/extensions/string_extension.dart';
 import 'package:storypad_layout_builder/providers/theme_provider.dart';
 
 const List<ColorSwatch> kMaterialColors = <ColorSwatch>[
@@ -116,12 +117,12 @@ class ThemeView extends StatelessWidget {
       onSelected: (value) => themeProvider.setThemeMode(value),
       itemBuilder: (BuildContext context) {
         return ThemeMode.values.map((e) {
-          return PopupMenuItem(value: e, child: Text(e.name));
+          return PopupMenuItem(value: e, child: Text(e.name.capitalize));
         }).toList();
       },
       child: ListTile(
         title: Text("Theme Mode"),
-        subtitle: Text(themeProvider.themeMode.name),
+        subtitle: Text(themeProvider.themeMode.name.capitalize),
       ),
     );
   }
