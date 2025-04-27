@@ -54,19 +54,23 @@ class GridPage extends StatelessWidget {
       children: [
         DottedBorder(
           color: Theme.of(context).dividerColor,
-          strokeWidth: 2,
+          strokeWidth: MediaQuery.of(context).textScaler.scale(2.0),
           dashPattern: [5],
           borderType: BorderType.RRect,
           radius: Radius.zero,
           padding: EdgeInsets.zero,
           child: Container(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 16.0),
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).textScaler.scale(8.0),
+              bottom: MediaQuery.of(context).textScaler.scale(16.0),
+            ),
             decoration: BoxDecoration(
               color: backgroundColor,
               borderRadius: BorderRadius.zero,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               spacing: 0,
               children: [
                 TextFormField(
@@ -76,8 +80,8 @@ class GridPage extends StatelessWidget {
                   maxLines: null,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 4.0,
+                      horizontal: MediaQuery.of(context).textScaler.scale(16.0),
+                      vertical: MediaQuery.of(context).textScaler.scale(4.0),
                     ),
                     border: InputBorder.none,
                   ),
@@ -89,8 +93,8 @@ class GridPage extends StatelessWidget {
                   maxLines: null,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 4.0,
+                      horizontal: MediaQuery.of(context).textScaler.scale(16.0),
+                      vertical: MediaQuery.of(context).textScaler.scale(4.0),
                     ),
                     border: InputBorder.none,
                   ),
@@ -108,8 +112,12 @@ class GridPage extends StatelessWidget {
                 rotationDegree: page.topLeftSticker!.rotationDegree,
                 child: Image.memory(
                   topLeftSticker,
-                  width: page.topLeftSticker!.width.toDouble(),
-                  height: page.topLeftSticker!.height.toDouble(),
+                  width: MediaQuery.of(context)
+                      .textScaler
+                      .scale(page.topLeftSticker!.width.toDouble()),
+                  height: MediaQuery.of(context)
+                      .textScaler
+                      .scale(page.topLeftSticker!.height.toDouble()),
                 ),
               ),
             ),
@@ -123,8 +131,12 @@ class GridPage extends StatelessWidget {
                 rotationDegree: page.topRightSticker!.rotationDegree,
                 child: Image.memory(
                   topRightSticker,
-                  width: page.topRightSticker!.width.toDouble(),
-                  height: page.topRightSticker!.height.toDouble(),
+                  width: MediaQuery.of(context)
+                      .textScaler
+                      .scale(page.topRightSticker!.width.toDouble()),
+                  height: MediaQuery.of(context)
+                      .textScaler
+                      .scale(page.topRightSticker!.height.toDouble()),
                 ),
               ),
             ),
@@ -138,8 +150,12 @@ class GridPage extends StatelessWidget {
                 rotationDegree: page.bottomLeftSticker!.rotationDegree,
                 child: Image.memory(
                   bottomLeftSticker,
-                  width: page.bottomLeftSticker!.width.toDouble(),
-                  height: page.bottomLeftSticker!.height.toDouble(),
+                  width: MediaQuery.of(context)
+                      .textScaler
+                      .scale(page.bottomLeftSticker!.width.toDouble()),
+                  height: MediaQuery.of(context)
+                      .textScaler
+                      .scale(page.bottomLeftSticker!.height.toDouble()),
                 ),
               ),
             ),
@@ -153,8 +169,12 @@ class GridPage extends StatelessWidget {
                 rotationDegree: page.bottomRightSticker!.rotationDegree,
                 child: Image.memory(
                   bottomRightSticker,
-                  width: page.bottomRightSticker!.width.toDouble(),
-                  height: page.bottomRightSticker!.height.toDouble(),
+                  width: MediaQuery.of(context)
+                      .textScaler
+                      .scale(page.bottomRightSticker!.width.toDouble()),
+                  height: MediaQuery.of(context)
+                      .textScaler
+                      .scale(page.bottomRightSticker!.height.toDouble()),
                 ),
               ),
             ),

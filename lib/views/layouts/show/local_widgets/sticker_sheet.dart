@@ -22,10 +22,16 @@ class StickerSheet extends StatefulWidget {
   ) async {
     return showModalBottomSheet(
       context: context,
-      showDragHandle: true,
-      isDismissible: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      showDragHandle: false,
       builder: (context) {
-        return StickerSheet(page: initialPage);
+        return DraggableScrollableSheet(builder: (context, controller) {
+          return PrimaryScrollController(
+            controller: controller,
+            child: StickerSheet(page: initialPage),
+          );
+        });
       },
     );
   }
@@ -39,184 +45,194 @@ class _StickerSheetState extends State<StickerSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).padding.bottom + 16.0,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Manage sticker & background"),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      body: ListView(
+        controller: PrimaryScrollController.maybeOf(context),
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).padding.bottom + 16.0,
+        ),
         children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: {
-              'Top left': page.topLeftSticker,
-              'Top right': page.topRightSticker,
-              'Bottom left': page.bottomLeftSticker,
-              'Bottom right': page.bottomRightSticker,
-            }.entries.map((entry) {
-              final content = entry.value != null
-                  ? ImagePickerService.getContent(entry.value!.imageKey)
-                  : null;
-              return ListTile(
-                leading: SizedBox(
-                  width: 64,
-                  child: content != null
-                      ? RotateChild(
-                          rotationDegree: entry.value!.rotationDegree,
-                          child: Image.memory(content),
-                        )
-                      : Icon(Icons.image_not_supported_outlined),
-                ),
-                title: Text(entry.value != null
-                    ? "${entry.key.capitalize} ${entry.value?.width} / ${entry.value?.height}"
-                    : entry.key.capitalize),
-                subtitle: entry.value != null
-                    ? Slider(
-                        padding: EdgeInsets.zero,
-                        min: 0,
-                        max: 360,
-                        value: entry.value?.rotationDegree ?? 0,
-                        label: "${entry.value?.rotationDegree}",
-                        divisions: 24,
-                        onChanged: (value) {
-                          switch (entry.key) {
-                            case 'Top left':
-                              page = page.copyWithTopLeftSticker(
-                                Sticker(
-                                  rotationDegree: value,
-                                  imageKey: entry.value!.imageKey,
-                                  width: entry.value!.width,
-                                  height: entry.value!.height,
-                                ),
-                              );
-                              break;
-                            case 'Top right':
-                              page = page.copyWithTopRightSticker(
-                                Sticker(
-                                  rotationDegree: value,
-                                  imageKey: entry.value!.imageKey,
-                                  width: entry.value!.width,
-                                  height: entry.value!.height,
-                                ),
-                              );
-                              break;
-                            case 'Bottom left':
-                              page = page.copyWithBottomLeftSticker(
-                                Sticker(
-                                  rotationDegree: value,
-                                  imageKey: entry.value!.imageKey,
-                                  width: entry.value!.width,
-                                  height: entry.value!.height,
-                                ),
-                              );
-                              break;
-                            case 'Bottom right':
-                              page = page.copyWithBottomRightSticker(
-                                Sticker(
-                                  rotationDegree: value,
-                                  imageKey: entry.value!.imageKey,
-                                  width: entry.value!.width,
-                                  height: entry.value!.height,
-                                ),
-                              );
-                              break;
-                          }
-
-                          setState(() {});
-                        },
-                      )
-                    : null,
-                trailing: entry.value == null
-                    ? IconButton(
-                        icon: Icon(Icons.add),
-                        onPressed: () async {
-                          final key = await ImagePickerService().pick(context);
-
-                          if (key == null) return;
-
-                          final content = ImagePickerService.getContent(key);
-                          if (content == null) return;
-
-                          final size = await getImageSize(content);
-
-                          switch (entry.key) {
-                            case 'Top left':
-                              page = page.copyWithTopLeftSticker(
-                                Sticker(
-                                  rotationDegree: 0,
-                                  imageKey: key,
-                                  width: size.width,
-                                  height: size.height,
-                                ),
-                              );
-                              break;
-                            case 'Top right':
-                              page = page.copyWithTopRightSticker(
-                                Sticker(
-                                  rotationDegree: 0,
-                                  imageKey: key,
-                                  width: size.width,
-                                  height: size.height,
-                                ),
-                              );
-                              break;
-                            case 'Bottom left':
-                              page = page.copyWithBottomLeftSticker(
-                                Sticker(
-                                  rotationDegree: 0,
-                                  imageKey: key,
-                                  width: size.width,
-                                  height: size.height,
-                                ),
-                              );
-                              break;
-                            case 'Bottom right':
-                              page = page.copyWithBottomRightSticker(
-                                Sticker(
-                                  rotationDegree: 0,
-                                  imageKey: key,
-                                  width: size.width,
-                                  height: size.height,
-                                ),
-                              );
-                              break;
-                          }
-
-                          setState(() {});
-                        },
-                      )
-                    : IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          switch (entry.key) {
-                            case 'Top left':
-                              page = page.copyWithTopLeftSticker(null);
-                              break;
-                            case 'Top right':
-                              page = page.copyWithTopRightSticker(null);
-                              break;
-                            case 'Bottom left':
-                              page = page.copyWithBottomLeftSticker(null);
-                              break;
-                            case 'Bottom right':
-                              page = page.copyWithBottomRightSticker(null);
-                              break;
-                          }
-
-                          setState(() {});
-                        },
-                      ),
-              );
-            }).toList(),
-          ),
+          buildImagesSection(context),
           Divider(),
           buildColorSeedTile(context),
-          FilledButton(
-            child: Text("Save"),
-            onPressed: () => Navigator.maybePop(context, page),
-          )
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 36),
+            child: FilledButton(
+              child: Text("Save"),
+              onPressed: () => Navigator.maybePop(context, page),
+            ),
+          ),
         ],
       ),
+    );
+  }
+
+  Widget buildImagesSection(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: {
+        'Top left': page.topLeftSticker,
+        'Top right': page.topRightSticker,
+        'Bottom left': page.bottomLeftSticker,
+        'Bottom right': page.bottomRightSticker,
+      }.entries.map((entry) {
+        final content = entry.value != null
+            ? ImagePickerService.getContent(entry.value!.imageKey)
+            : null;
+        return ListTile(
+          leading: SizedBox(
+            width: 64,
+            child: content != null
+                ? RotateChild(
+                    rotationDegree: entry.value!.rotationDegree,
+                    child: Image.memory(content),
+                  )
+                : Icon(Icons.image_not_supported_outlined),
+          ),
+          title: Text(entry.value != null
+              ? "${entry.key.capitalize} ${entry.value?.width} / ${entry.value?.height}"
+              : entry.key.capitalize),
+          subtitle: entry.value != null
+              ? Slider(
+                  padding: EdgeInsets.zero,
+                  min: 0,
+                  max: 360,
+                  value: entry.value?.rotationDegree ?? 0,
+                  label: "${entry.value?.rotationDegree}",
+                  divisions: 24,
+                  onChanged: (value) {
+                    switch (entry.key) {
+                      case 'Top left':
+                        page = page.copyWithTopLeftSticker(
+                          Sticker(
+                            rotationDegree: value,
+                            imageKey: entry.value!.imageKey,
+                            width: entry.value!.width,
+                            height: entry.value!.height,
+                          ),
+                        );
+                        break;
+                      case 'Top right':
+                        page = page.copyWithTopRightSticker(
+                          Sticker(
+                            rotationDegree: value,
+                            imageKey: entry.value!.imageKey,
+                            width: entry.value!.width,
+                            height: entry.value!.height,
+                          ),
+                        );
+                        break;
+                      case 'Bottom left':
+                        page = page.copyWithBottomLeftSticker(
+                          Sticker(
+                            rotationDegree: value,
+                            imageKey: entry.value!.imageKey,
+                            width: entry.value!.width,
+                            height: entry.value!.height,
+                          ),
+                        );
+                        break;
+                      case 'Bottom right':
+                        page = page.copyWithBottomRightSticker(
+                          Sticker(
+                            rotationDegree: value,
+                            imageKey: entry.value!.imageKey,
+                            width: entry.value!.width,
+                            height: entry.value!.height,
+                          ),
+                        );
+                        break;
+                    }
+
+                    setState(() {});
+                  },
+                )
+              : null,
+          trailing: entry.value == null
+              ? IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () async {
+                    final key = await ImagePickerService().pick(context);
+
+                    if (key == null) return;
+
+                    final content = ImagePickerService.getContent(key);
+                    if (content == null) return;
+
+                    final size = await getImageSize(content);
+
+                    switch (entry.key) {
+                      case 'Top left':
+                        page = page.copyWithTopLeftSticker(
+                          Sticker(
+                            rotationDegree: 0,
+                            imageKey: key,
+                            width: size.width,
+                            height: size.height,
+                          ),
+                        );
+                        break;
+                      case 'Top right':
+                        page = page.copyWithTopRightSticker(
+                          Sticker(
+                            rotationDegree: 0,
+                            imageKey: key,
+                            width: size.width,
+                            height: size.height,
+                          ),
+                        );
+                        break;
+                      case 'Bottom left':
+                        page = page.copyWithBottomLeftSticker(
+                          Sticker(
+                            rotationDegree: 0,
+                            imageKey: key,
+                            width: size.width,
+                            height: size.height,
+                          ),
+                        );
+                        break;
+                      case 'Bottom right':
+                        page = page.copyWithBottomRightSticker(
+                          Sticker(
+                            rotationDegree: 0,
+                            imageKey: key,
+                            width: size.width,
+                            height: size.height,
+                          ),
+                        );
+                        break;
+                    }
+
+                    setState(() {});
+                  },
+                )
+              : IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    switch (entry.key) {
+                      case 'Top left':
+                        page = page.copyWithTopLeftSticker(null);
+                        break;
+                      case 'Top right':
+                        page = page.copyWithTopRightSticker(null);
+                        break;
+                      case 'Bottom left':
+                        page = page.copyWithBottomLeftSticker(null);
+                        break;
+                      case 'Bottom right':
+                        page = page.copyWithBottomRightSticker(null);
+                        break;
+                    }
+
+                    setState(() {});
+                  },
+                ),
+        );
+      }).toList(),
     );
   }
 
