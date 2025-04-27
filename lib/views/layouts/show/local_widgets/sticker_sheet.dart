@@ -113,7 +113,38 @@ class _StickerSheetState extends State<StickerSheet> {
                       )
                     : null,
                 trailing: entry.value == null
-                    ? Icon(Icons.add)
+                    ? IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: () async {
+                          final key = await ImagePickerService().pick(context);
+                          if (key == null) return;
+
+                          switch (entry.key) {
+                            case 'Top left':
+                              page = page.copyWithTopLeftSticker(
+                                Sticker(rotationDegree: 0, imageKey: key),
+                              );
+                              break;
+                            case 'Top right':
+                              page = page.copyWithTopRightSticker(
+                                Sticker(rotationDegree: 0, imageKey: key),
+                              );
+                              break;
+                            case 'Bottom left':
+                              page = page.copyWithBottomLeftSticker(
+                                Sticker(rotationDegree: 0, imageKey: key),
+                              );
+                              break;
+                            case 'Bottom right':
+                              page = page.copyWithBottomRightSticker(
+                                Sticker(rotationDegree: 0, imageKey: key),
+                              );
+                              break;
+                          }
+
+                          setState(() {});
+                        },
+                      )
                     : IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () {
@@ -135,35 +166,6 @@ class _StickerSheetState extends State<StickerSheet> {
                           setState(() {});
                         },
                       ),
-                onTap: () async {
-                  final key = await ImagePickerService().pick(context);
-                  if (key == null) return;
-
-                  switch (entry.key) {
-                    case 'Top left':
-                      page = page.copyWithTopLeftSticker(
-                        Sticker(rotationDegree: 0, imageKey: key),
-                      );
-                      break;
-                    case 'Top right':
-                      page = page.copyWithTopRightSticker(
-                        Sticker(rotationDegree: 0, imageKey: key),
-                      );
-                      break;
-                    case 'Bottom left':
-                      page = page.copyWithBottomLeftSticker(
-                        Sticker(rotationDegree: 0, imageKey: key),
-                      );
-                      break;
-                    case 'Bottom right':
-                      page = page.copyWithBottomRightSticker(
-                        Sticker(rotationDegree: 0, imageKey: key),
-                      );
-                      break;
-                  }
-
-                  setState(() {});
-                },
               );
             }).toList(),
           ),

@@ -23,6 +23,7 @@ class ImagePickerService {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
+      showDragHandle: false,
       builder: (context) {
         return DraggableScrollableSheet(builder: (context, controller) {
           return PrimaryScrollController(
@@ -72,7 +73,7 @@ class _ImagePickerSheetState extends State<_ImagePickerSheet> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Images"),
+        title: Text("Select an image below"),
         actions: [
           IconButton(
             icon: Icon(Icons.add),

@@ -29,15 +29,15 @@ class GridPage extends StatelessWidget {
         : null;
 
     final topRightSticker = page.topRightSticker != null
-        ? ImagePickerService.getContent(page.topLeftSticker!.imageKey)
+        ? ImagePickerService.getContent(page.topRightSticker!.imageKey)
         : null;
 
     final bottomLeftSticker = page.bottomLeftSticker != null
-        ? ImagePickerService.getContent(page.topLeftSticker!.imageKey)
+        ? ImagePickerService.getContent(page.bottomLeftSticker!.imageKey)
         : null;
 
     final bottomRightSticker = page.bottomRightSticker != null
-        ? ImagePickerService.getContent(page.topLeftSticker!.imageKey)
+        ? ImagePickerService.getContent(page.bottomRightSticker!.imageKey)
         : null;
 
     return Stack(
